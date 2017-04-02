@@ -36,20 +36,17 @@ public class TownGraph {
     }
 
     public Integer calculateNumTripsByNumStops(String begin, String end, int numStops) {
-        List<List<String>> cycles = retrievePaths(begin, end, numStops, new ArrayList<String>());
-
-
-
-        return 1;
+        return retrievePaths(begin, end, numStops, new ArrayList<>()).size();
     }
 
     public List<List<String>> retrievePaths(String current, String end, int numStops, List<String> stopList) {
         Node currNode = townGraph.get(current);
         stopList.add(current);
-        if (current.equals(end) && stopList.size() != 1) {
-            return Arrays.asList(stopList);
-        }
         List<List<String>> tripsToEnd = new ArrayList<>();
+        if (current.equals(end) && stopList.size() != 1) {
+            tripsToEnd.add(stopList);
+        }
+
         if (numStops > 0) {
             int newNumStops = numStops - 1;
             for (String nodeName:currNode.getConnections()) {

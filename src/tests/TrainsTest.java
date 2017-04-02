@@ -80,14 +80,30 @@ class TrainsTest {
         String[] onePath = {"C", "D", "C"};
         String[] twoPath = {"C", "E", "B", "C"};
         String[] threePath = {"C", "D", "E", "B", "C"};
+        String[] fourPath = {"C", "D", "C", "D", "C"};
         List<List<String>> result = townGraph.retrievePaths("C", "C", 3, new ArrayList<>());
         Assertions.assertArrayEquals(onePath, result.get(0).toArray());
         Assertions.assertArrayEquals(twoPath, result.get(1).toArray());
 
-        List<List<String>> secondResult = townGraph.retrievePaths("C", "C", 30, new ArrayList<>());
-        Assertions.assertArrayEquals(onePath, secondResult.get(0).toArray());
-        Assertions.assertArrayEquals(threePath, secondResult.get(1).toArray());
-        Assertions.assertArrayEquals(twoPath, secondResult.get(2).toArray());
+        System.out.println(result);
+
+        result = townGraph.retrievePaths("C", "C", 4, new ArrayList<>());
+        Assertions.assertArrayEquals(onePath, result.get(0).toArray());
+        Assertions.assertArrayEquals(fourPath, result.get(1).toArray());
+        Assertions.assertArrayEquals(threePath, result.get(2).toArray());
+        Assertions.assertArrayEquals(twoPath, result.get(3).toArray());
+        System.out.println(result);
+
+        result = townGraph.retrievePaths("C", "C", 6, new ArrayList<>());
+        Assertions.assertEquals(10, result.size());
+
+        result = townGraph.retrievePaths("C", "C", 7, new ArrayList<>());
+        System.out.println("Second result:");
+        for(List<String> one:result) {
+            System.out.println(one);
+        }
+        System.out.println("Size: " + result.size());
     }
+
 
 }
