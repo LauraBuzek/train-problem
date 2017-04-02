@@ -1,5 +1,7 @@
 package com.graph;
 
+import javafx.util.Pair;
+
 import java.util.*;
 
 /**
@@ -24,7 +26,7 @@ public class TownGraph {
         int distance = 0;
         for(int i = 0; i < nodeNames.length - 1; i++) {
             Node curr_node = townGraph.get(nodeNames[i]);
-            int edgeLength = curr_node.getConnection(nodeNames[i+1]);
+            int edgeLength = curr_node.getConnectionByName(nodeNames[i+1]);
             if (edgeLength == -1) {
                 return -1;
             } else {
@@ -49,7 +51,7 @@ public class TownGraph {
 
         if (numStops > 0) {
             int newNumStops = numStops - 1;
-            for (String nodeName:currNode.getConnections()) {
+            for (String nodeName:currNode.getNamesOfConnections()) {
                 List<String> newStopList = new ArrayList<>(stopList);
                 List<List<String>> result = retrievePaths(nodeName, end, newNumStops, newStopList);
                 if(result != null) {
@@ -59,9 +61,31 @@ public class TownGraph {
         }
 
         return tripsToEnd;
-
     }
 
+    public String[] getShortestPath(String begin, String end) {
+        return (String[])getShortestPathHelper(begin, end, new ArrayList<String>(), 0).getValue().toArray();
+    }
+
+    private Map.Entry<Integer, List<String>> getShortestPathHelper(String current, String end, List<String> stopList, int stopSum) {
+        Node currNode = townGraph.get(current);
+        stopList.add(current);
+        if (current.equals(end) && stopList.size() != 1) {
+            return new HashMap.SimpleEntry<>(stopSum, stopList);
+        }
+
+        Map.Entry<Integer, List<String>> bestPath = null;
+        for (Map.Entry<String, Integer> connection:currNode.getConnections().entrySet()) {
+            List<String> newStopList = new ArrayList<>(stopList);
+            int newStopSum = stopSum + connection.getValue();
+            Map.Entry<Integer, List<String>> newPath = getShortestPathHelper(connection.getKey(), end, newStopList, newStopSum);
+            if (newPath.getKey() < bestPath.getKey()) { //If two paths are the same length, only one is returned
+                bestPath = newPath;
+            }
+        }
+
+        return bestPath;
+    }
 
     private void createNode(String nodeName) {
         Node node = new Node(nodeName);

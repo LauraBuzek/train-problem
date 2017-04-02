@@ -27,7 +27,7 @@ public class Node {
         this.name = name;
     }
 
-    public int getConnection(String name) {
+    public int getConnectionByName(String name) {
         if(connections.containsKey(name)) {
             return connections.get(name);
         } else {
@@ -35,11 +35,15 @@ public class Node {
         }
     }
 
-    public String[] getConnections() {
+    public String[] getNamesOfConnections() {
         Object[] connectionNames = connections.keySet().toArray();
         String[] stringNames = Arrays.copyOf(connectionNames, connectionNames.length, String[].class);
 
         return stringNames;
+    }
+
+    public HashMap<String, Integer> getConnections() {
+        return connections;
     }
 
 }
