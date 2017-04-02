@@ -3,9 +3,6 @@ package com.graph;
 import java.util.Arrays;
 import java.util.HashMap;
 
-/**
- * Created by Laura on 3/26/17.
- */
 public class Node {
     private String name;
     private HashMap<String, Integer> connections;

@@ -6,10 +6,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-
-/**
- * Created by Laura on 3/26/17.
- */
 public class Trains {
     public static void main(String args[]) {
         FileReader input = null;

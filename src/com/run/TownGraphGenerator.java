@@ -5,9 +5,6 @@ import com.graph.TownGraph;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-/**
- * Created by Laura on 3/26/17.
- */
 public class TownGraphGenerator {
 
     public static TownGraph createTownGraph(BufferedReader bufferedInput) throws IOException {
