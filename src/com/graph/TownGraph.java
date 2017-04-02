@@ -1,6 +1,6 @@
 package com.graph;
 
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * Created by Laura on 3/26/17.
@@ -36,34 +36,32 @@ public class TownGraph {
     }
 
     public Integer calculateNumTripsByNumStops(String begin, String end, int numStops) {
-        Node beginNode = townGraph.get(begin);
+        List<List<String>> cycles = retrievePaths(begin, end, numStops, new ArrayList<String>());
 
-        int numTrips = 0;
-        if (numStops > 1) {
-            numStops -= 1;
-            for (String nodeName : beginNode.getConnections()) {
-                numTrips += calculateNumTripsByNumStopsHelper(nodeName, end, numStops);
-            }
-        }
-        return numTrips;
+
+
+        return 1;
     }
 
-    public Integer calculateNumTripsByNumStopsHelper(String current, String end, int numStops) {
+    public List<List<String>> retrievePaths(String current, String end, int numStops, List<String> stopList) {
         Node currNode = townGraph.get(current);
-
-        int numTrips = 0;
-        if (current.equals(end)) {
-            numTrips += 1;
+        stopList.add(current);
+        if (current.equals(end) && stopList.size() != 1) {
+            return Arrays.asList(stopList);
         }
-
+        List<List<String>> tripsToEnd = new ArrayList<>();
         if (numStops > 0) {
             int newNumStops = numStops - 1;
             for (String nodeName:currNode.getConnections()) {
-                numTrips += calculateNumTripsByNumStopsHelper(nodeName, end, newNumStops);
+                List<String> newStopList = new ArrayList<>(stopList);
+                List<List<String>> result = retrievePaths(nodeName, end, newNumStops, newStopList);
+                if(result != null) {
+                    tripsToEnd.addAll(result);
+                }
             }
         }
 
-        return numTrips;
+        return tripsToEnd;
 
     }
 

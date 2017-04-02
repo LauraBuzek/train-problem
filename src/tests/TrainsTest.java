@@ -11,6 +11,9 @@ import sun.jvm.hotspot.utilities.Assert;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Laura on 3/26/17.
@@ -63,13 +66,28 @@ class TrainsTest {
         Assertions.assertEquals(2, result);
 
         // equal to 4 stops
-//        result = townGraph.calculateNumTripsByNumStops("A", "C", 4);
-//        Assertions.assertEquals(3, result);
+        result = townGraph.calculateNumTripsByNumStops("A", "C", 4);
+        Assertions.assertEquals(3, result);
 
         result = townGraph.calculateNumTripsByNumStops("C", "C", 9);
         Assertions.assertEquals(7, result);
 
 
+    }
+
+    @Test
+    void retrievePathsTest() {
+        String[] onePath = {"C", "D", "C"};
+        String[] twoPath = {"C", "E", "B", "C"};
+        String[] threePath = {"C", "D", "E", "B", "C"};
+        List<List<String>> result = townGraph.retrievePaths("C", "C", 3, new ArrayList<>());
+        Assertions.assertArrayEquals(onePath, result.get(0).toArray());
+        Assertions.assertArrayEquals(twoPath, result.get(1).toArray());
+
+        List<List<String>> secondResult = townGraph.retrievePaths("C", "C", 30, new ArrayList<>());
+        Assertions.assertArrayEquals(onePath, secondResult.get(0).toArray());
+        Assertions.assertArrayEquals(threePath, secondResult.get(1).toArray());
+        Assertions.assertArrayEquals(twoPath, secondResult.get(2).toArray());
     }
 
 }
