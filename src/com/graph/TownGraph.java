@@ -63,28 +63,36 @@ public class TownGraph {
         return tripsToEnd;
     }
 
-    public String[] getShortestPath(String begin, String end) {
-        return (String[])getShortestPathHelper(begin, end, new ArrayList<String>(), 0).getValue().toArray();
+    public Integer getShortestPath(String begin, String end) {
+        return getShortestPathHelper(begin, end, new ArrayList<String>(), 0);
     }
 
-    private Map.Entry<Integer, List<String>> getShortestPathHelper(String current, String end, List<String> stopList, int stopSum) {
+    private Integer getShortestPathHelper(String current, String end, List<String> stopList, int stopSum) {
         Node currNode = townGraph.get(current);
-        stopList.add(current);
-        if (current.equals(end) && stopList.size() != 1) {
-            return new HashMap.SimpleEntry<>(stopSum, stopList);
+
+        if(stopList.size() > 0 && current.equals(end)) { //Returns sum if the path is found
+            return stopSum;
         }
 
-        Map.Entry<Integer, List<String>> bestPath = null;
+        if (stopList.size() > 0 && stopList.contains(current)) { //Stops in the event of finding a cycle
+            return null;
+        }
+
+        stopList.add(current);
+
+        Integer shortestPath = null;
         for (Map.Entry<String, Integer> connection:currNode.getConnections().entrySet()) {
             List<String> newStopList = new ArrayList<>(stopList);
             int newStopSum = stopSum + connection.getValue();
-            Map.Entry<Integer, List<String>> newPath = getShortestPathHelper(connection.getKey(), end, newStopList, newStopSum);
-            if (newPath.getKey() < bestPath.getKey()) { //If two paths are the same length, only one is returned
-                bestPath = newPath;
+            Integer newPathLength = getShortestPathHelper(connection.getKey(), end, newStopList, newStopSum);
+
+            if (shortestPath == null ||
+                    (newPathLength != null && newPathLength < shortestPath)) { //If two paths are the same length, only one is returned
+                shortestPath = newPathLength;
             }
         }
 
-        return bestPath;
+        return shortestPath;
     }
 
     private void createNode(String nodeName) {

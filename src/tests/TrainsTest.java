@@ -105,5 +105,23 @@ class TrainsTest {
         System.out.println("Size: " + result.size());
     }
 
+    @Test
+    void getShortestPathTest() {
+        int result = townGraph.getShortestPath("A", "C");
+        Assertions.assertEquals(9, result);
+
+        result = townGraph.getShortestPath("B", "B");
+        Assertions.assertEquals(9, result);
+
+        result = townGraph.getShortestPath("A", "B");
+        Assertions.assertEquals(5, result);
+
+        result = townGraph.getShortestPath("D", "C");
+        Assertions.assertEquals(8, result);
+
+        result = townGraph.getShortestPath("C", "C");
+        Assertions.assertEquals(9, result);
+    }
+
 
 }
