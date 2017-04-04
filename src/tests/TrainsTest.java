@@ -75,20 +75,20 @@ class TrainsTest {
     }
 
     @Test
-    void getShortestPathTest() {
-        int result = townGraph.getShortestPath("A", "C");
+    void getShortestTripTest() {
+        int result = townGraph.getShortestTrip("A", "C");
         Assertions.assertEquals(9, result);
 
-        result = townGraph.getShortestPath("B", "B");
+        result = townGraph.getShortestTrip("B", "B");
         Assertions.assertEquals(9, result);
 
-        result = townGraph.getShortestPath("A", "B");
+        result = townGraph.getShortestTrip("A", "B");
         Assertions.assertEquals(5, result);
 
-        result = townGraph.getShortestPath("D", "C");
+        result = townGraph.getShortestTrip("D", "C");
         Assertions.assertEquals(8, result);
 
-        result = townGraph.getShortestPath("C", "C");
+        result = townGraph.getShortestTrip("C", "C");
         Assertions.assertEquals(9, result);
     }
 

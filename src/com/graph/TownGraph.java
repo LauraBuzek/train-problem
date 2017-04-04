@@ -36,11 +36,11 @@ public class TownGraph {
         return getNumPaths(exactLength, begin, end, numStops, new ArrayList<>());
     }
 
-    public Integer getShortestPath(String begin, String end) {
+    public Integer getShortestTrip(String begin, String end) {
         return getShortestPathHelper(begin, end, new ArrayList<String>(), 0);
     }
 
-    public Integer getNumPaths(boolean exactLength, String current, String end, int numStops, List<String> stopList) {
+    private Integer getNumPaths(boolean exactLength, String current, String end, int numStops, List<String> stopList) {
         Node currNode = townGraph.get(current);
         stopList.add(current);
         Integer total = 0;
@@ -64,12 +64,11 @@ public class TownGraph {
     private Integer getShortestPathHelper(String current, String end, List<String> stopList, int stopSum) {
         Node currNode = townGraph.get(current);
 
-        if(stopList.size() > 0 && current.equals(end)) { //Returns sum if the path is found
-            return stopSum;
-        }
-
-        if (stopList.size() > 0 && stopList.contains(current)) { //Stops in the event of finding a cycle
-            return null;
+        if (stopList.size() > 0) {
+            //Returns sum if the path is found
+            if (current.equals(end)) { return stopSum; }
+            //Stops in the event of finding a cycle
+            if (stopList.contains(current)) { return null; }
         }
 
         stopList.add(current);
