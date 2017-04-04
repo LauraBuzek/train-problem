@@ -33,20 +33,20 @@ public class TownGraph {
     }
 
     public Integer calculateNumTripsByNumStops(boolean exactLength, String begin, String end, int numStops) {
-        return getPaths(exactLength, begin, end, numStops, new ArrayList<>()).size();
+        return getNumPaths(exactLength, begin, end, numStops, new ArrayList<>());
     }
 
     public Integer getShortestPath(String begin, String end) {
         return getShortestPathHelper(begin, end, new ArrayList<String>(), 0);
     }
 
-    public List<List<String>> getPaths(boolean exactLength, String current, String end, int numStops, List<String> stopList) {
+    public Integer getNumPaths(boolean exactLength, String current, String end, int numStops, List<String> stopList) {
         Node currNode = townGraph.get(current);
         stopList.add(current);
-        List<List<String>> tripsToEnd = new ArrayList<>();
+        Integer total = 0;
         if (current.equals(end) && stopList.size() != 1) {
             if (!exactLength || numStops == 0) { //If the flag to look for exact length is turned on, numStops must be 0 to add path
-                tripsToEnd.add(stopList);
+                total++;
             }
         }
 
@@ -54,14 +54,11 @@ public class TownGraph {
             int newNumStops = numStops - 1;
             for (String nodeName:currNode.getNamesOfConnections()) {
                 List<String> newStopList = new ArrayList<>(stopList);
-                List<List<String>> result = getPaths(exactLength, nodeName, end, newNumStops, newStopList);
-                if(result != null) {
-                    tripsToEnd.addAll(result);
-                }
+                total += getNumPaths(exactLength, nodeName, end, newNumStops, newStopList);
             }
         }
 
-        return tripsToEnd;
+        return total;
     }
 
     private Integer getShortestPathHelper(String current, String end, List<String> stopList, int stopSum) {
